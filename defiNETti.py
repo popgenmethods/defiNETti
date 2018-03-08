@@ -99,7 +99,7 @@ def _symmetric_layer(x, layer):
     if layer[0] == "max":
         k = 1
     elif layer[0] == "sort":
-        k = x.shape.as_list()[1]
+        k = x.shape.as_list()[-1]
     elif layer[0] == "top_k":
         k = layer[1]
     else:
