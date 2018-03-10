@@ -1,4 +1,8 @@
 
+================
+defiNETti
+================
+
 defiNETti is a program for performing Bayesian inference on exchangeable 
 (or permutation-invariant) data via deep learning. In particular, it is
 well-suited for population genetic applications.
