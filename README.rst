@@ -77,7 +77,7 @@ Arguments
 - ``output_shape`` - A tuple specifying the shape of the label output by ``<simulator>`` or :math:`\theta`. For example, if the label is a 5-length continuous vector then the shape should be listed as ``(5,)``. If the label is a discrete variable, the size of the dimension is the number of classes. Note that currently only classification of a single label is implemented. Only 1 dimensional labels are currently supported.
 - ``simulator`` - A function which returns tuples of ``(data, label)`` as mentioned above.
 - ``phi_net`` - A neural network parameterizing :math:`\Phi` shown above. The input syntax is shown in the Neural Network section above.
-- ``g`` -  An operation parameterizing the permutation-invariant function :math:`g` as shown above. The supported options include `('max',), ('sort',), ('top_k', <k>),` or `('moments', <m1>, <m2>, ...)`
+- ``g`` -  An operation parameterizing the permutation-invariant function :math:`g` as shown above. The supported options include ``('max',), ('sort',), ('top_k', <k>),`` or ``('moments', <m1>, <m2>, ...)``
 - ``h_net`` - A neural network parameterizing :math:`h` as shown above. The input syntax is the same as for `phi_net`.
 - ``network_function`` - A function of tensorflow operations specifying the neural net if you want to create your own network (if present ignores phi_net, g, and h_net).
 - ``loss`` - The loss function to choose to train your neural network. Either "cross-ent" for cross-entropy loss or "l2" for l2-loss or a user-defined tensorflow function.
