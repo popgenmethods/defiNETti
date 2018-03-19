@@ -42,7 +42,7 @@ def parse_hapmap_empirical_prior(files):
 def draw_background_rate_from_prior(prior_rates, prob):
     return np.random.choice(prior_rates, p=prob)
 
-def simulate_data():
+def simulate_data(prior_rates, weight_prob):
     hot_spot = np.random.randint(0,2)
 
     # Use flat empirical maps
@@ -106,4 +106,4 @@ def simulate_data():
     label[hot_spot] = 1
     return (combined,label)
 
-prior_rates, weight_prob = parse_hapmap_empirical_prior(['genetic_map_GRCh37_chr1_truncated.txt'])
+# prior_rates, weight_prob = parse_hapmap_empirical_prior(['genetic_map_GRCh37_chr1_truncated.txt'])
