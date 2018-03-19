@@ -106,4 +106,4 @@ def simulate_data():
     label[hot_spot] = 1
     return (combined,label)
 
-prior_rates, weight_prob = parse_hapmap_empirical_prior('./...')
+prior_rates, weight_prob = parse_hapmap_empirical_prior(['genetic_map_GRCh37_chr1_truncated.txt'])
