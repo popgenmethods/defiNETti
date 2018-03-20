@@ -104,7 +104,12 @@ def _symmetric_layer(x, layer):
         k = layer[1]
     else:
         raise Exception("g layer must be either ('max',), ('sort',), ('top_k', <k>), or ('moments', <m1>, <m2>, ...)")
-    x = tf.nn.top_k(x, k=k, sorted=True)[0]
+    if k > 1:
+        x = tf.nn.top_k(x, k=k, sorted=True)[0]
+    elif k == 1:    
+	x = tf.reduce_max(x, 3, keepdims = True)
+    else:
+	raise Exception("k should not be < 0.")
     flat_shape = x.shape.as_list()
     flat_shape = [-1, 1, flat_shape[2], flat_shape[1]*flat_shape[3]]
     return tf.reshape(x,shape=flat_shape)
@@ -142,7 +147,7 @@ def _build_network(phi_net, g, h_net, input_shape, output_shape):
     #define function implied by network
     def network_function(x):
         if len(x.shape.as_list()) == 3:
-            to_return = tf.expand_dims(x,-1)
+	    to_return = tf.expand_dims(x,-1)
         else:
             to_return = x
         for idx,layer in enumerate(phi_net):
@@ -153,8 +158,6 @@ def _build_network(phi_net, g, h_net, input_shape, output_shape):
         return to_return
 
     return network_function
-
-
 
 def train(input_shape, output_shape, simulator, phi_net = [("fc",1024),("fc",1024)], g = ("max",), h_net = [("fc",512),("softmax",)], 
           network_function = None, loss = "cross-ent", accuracy="classification", num_batches = 20000, batch_size=50, 
@@ -203,7 +206,7 @@ def train(input_shape, output_shape, simulator, phi_net = [("fc",1024),("fc",102
         except:
             logging.warning("Simulator created data of an unexpected dimension")
     def simulation_iterator():
-        while True:
+	while True:
             x,y = safe_simulate()
             yield x,y
     class SimulationRunner(object):
@@ -279,7 +282,7 @@ def train(input_shape, output_shape, simulator, phi_net = [("fc",1024),("fc",102
         op_threads = tf.train.start_queue_runners(sess=sess, coord=coord)
         for batch_count in range(num_batches):
             _,loss_val,acc = sess.run([train_step,loss_func,acc_func])
-            if batch_count % verbosity == 0:
+	    if batch_count % verbosity == 0:
                 logging.info('Batch {} complete'.format(batch_count))
                 logging.info('Loss value on current batch = {}'.format(loss_val))
                 logging.info('Accuracy on current batch = {}'.format(acc))

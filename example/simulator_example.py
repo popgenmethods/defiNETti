@@ -101,7 +101,8 @@ def simulate_data(prior_rates, weight_prob):
     combined = np.empty((image.shape[0], image.shape[1], 2), dtype=distances.dtype)
     combined[:,:,0] = image
     combined[:,:-1,1] = distances
-
+    combined[:,-1,1] = 0.0
+    
     label = np.zeros(2)
     label[hot_spot] = 1
     return (combined,label)
