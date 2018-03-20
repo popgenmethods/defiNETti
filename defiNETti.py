@@ -270,7 +270,7 @@ def train(input_shape, output_shape, simulator, phi_net = [("fc",1024),("fc",102
 
     #run training
     if training_summary is not None:
-        summary = np.zeros((int(np.ceil(float(num_batches) / verbosity))),3)
+        summary = np.zeros((int(np.ceil(float(num_batches) / verbosity)),3))
     with tf.Session(config=tf.ConfigProto(intra_op_parallelism_threads=training_threads)) as sess:
         init_op = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
         sess.run(init_op)
