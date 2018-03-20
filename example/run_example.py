@@ -1,4 +1,7 @@
-import defiNETti
+import sys 
+import os
+sys.path.append(os.path.relpath(".."))
+from defiNETti import *
 import simulator_example
 
 # Train the network --  Use small num_batches for example purposes.
