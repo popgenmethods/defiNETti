@@ -89,6 +89,8 @@ Arguments
 - ``training_threads`` - The number of threads dedicated to training the network. 
 - ``sim_threads`` - The number of threads dedicated to simulating data.
 - ``save_path`` - The base filename to save the neural network. If None, the weights are not saved.
+- ``training_summary`` - The filename to save a summary of the training procedure. The format of the file is ``<batch_count> <loss_value> <accuracy>``. If ``None``, then no summary file is created.
+- ``logfile`` - Log extra training information to logfile. If logfile='.', logs to STDERR.
 
 Note: How to include distances for the 3-dimension use case. Vector can simply be padded with a 1 in the second dimension.
 Note: How to feed in simulators in python?

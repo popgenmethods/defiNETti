@@ -141,7 +141,7 @@ def _build_network(phi_net, g, h_net, input_shape, output_shape):
 
     #define function implied by network
     def network_function(x):
-        if len(x.shape.as_list()):
+        if len(x.shape.as_list()) == 3:
             to_return = tf.expand_dims(x,-1)
         else:
             to_return = x
@@ -159,7 +159,7 @@ def _build_network(phi_net, g, h_net, input_shape, output_shape):
 def train(input_shape, output_shape, simulator, phi_net = [("fc",1024),("fc",1024)], g = ("max",), h_net = [("fc",512),("softmax",)], 
           network_function = None, loss = "cross-ent", accuracy="classification", num_batches = 20000, batch_size=50, 
           queue_capacity=250, verbosity=100, training_threads=1,
-          sim_threads=1, save_path=None):
+          sim_threads=1, save_path=None, training_summary = None, logfile = "."):
     """Train an exchangeable neural network using simulation-on-the-fly
 
     Args:
@@ -179,9 +179,15 @@ def train(input_shape, output_shape, simulator, phi_net = [("fc",1024),("fc",102
         training_threads: number of threads used for neural network operations
         sim_threads: number of threads to used to simulate data
         save_path: file base name to save neural network, if None do not save network
+        training_summary: A text file containing the <# batch count> <# loss value> <# Accuracy>. The number of batches saved are determined by verbosity. If None, then nothing is saved.
+        logfile: Log extra info to logfile. If logfile='.', logs to STDERR.
     Returns:
         None
     """
+    if logfile == ".":
+        logging.basicConfig(level=logging.INFO)
+    elif logfile is not None:
+        logging.basicConfig(filename=logfile, level=logging.INFO)
     
     assert len(input_shape) == 2 or len(input_shape) == 3
     assert len(output_shape) == 1 
@@ -263,6 +269,8 @@ def train(input_shape, output_shape, simulator, phi_net = [("fc",1024),("fc",102
     saver = tf.train.Saver()    #for saving the weights later
 
     #run training
+    if training_summary is not None:
+        summary = np.zeros((int(np.ceil(float(num_batches) / verbosity))),3)
     with tf.Session(config=tf.ConfigProto(intra_op_parallelism_threads=training_threads)) as sess:
         init_op = tf.group(tf.global_variables_initializer(), tf.local_variables_initializer())
         sess.run(init_op)
@@ -275,6 +283,8 @@ def train(input_shape, output_shape, simulator, phi_net = [("fc",1024),("fc",102
                 logging.info('Batch {} complete'.format(batch_count))
                 logging.info('Loss value on current batch = {}'.format(loss_val))
                 logging.info('Accuracy on current batch = {}'.format(acc))
+                if training_summary is not None:
+                    summary[int(batch_count / verbosity),:] = [batch_count, loss_val, acc]
    
         simulator_thread.run = False
 
@@ -284,6 +294,8 @@ def train(input_shape, output_shape, simulator, phi_net = [("fc",1024),("fc",102
         
         if save_path is not None:
             saver.save(sess, os.path.expanduser(save_path))
+
+    np.savetxt(training_summary, summary)
 
     return
    
