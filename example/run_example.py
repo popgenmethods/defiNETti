@@ -9,7 +9,8 @@ defiNETti.train((198,24,2), (2,), lambda: simulator_example.simulate_data(prior_
                 num_batches = 2000,
                 training_threads=5,
                 sim_threads=5, 
-                save_path='./example_weights')
+                save_path='./example_weights',
+                training_summary='./summary.txt')
 
 
 # Test the network
