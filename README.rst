@@ -43,6 +43,8 @@ An example simulator for inferring gaussian parameters::
 
         return (data,label)
 
+A more detailed population genetics-specific example is shown in ``example/``
+
 
 Neural Network
 ==============
@@ -109,3 +111,13 @@ Arguments
 Output
 ------
 - ``output`` - A numpy array containing the network output for each input. The dimensions of the numpy array are ``(<length of data list>, <output_shape[0]>)``.
+
+Population Genetic Example
+==========================
+A population genetics-specific example can be found in ``example/``. Note that ``msprime`` version 0.4.0 is needed to run this example. This is a simpler version than the experiments used in the paper version.
+
+Disiderata:
+- Distances are normalized to be on the order of 0 and 1 for optimization purposes.
+- More SNPs than necessary are simulated then truncated and the hotspot region is centered.
+- A prior over rates is generated from the HapMap recombination map. In the paper version, we use windows of the fine-scale recombination map rather than flat rates as in the example.
+- When dealing with missing data, it may be helpful to copy the missing-ness patterns for the real data.
