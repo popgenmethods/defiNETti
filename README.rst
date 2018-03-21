@@ -16,6 +16,16 @@ Prerequisites:
 1. Scientific distribution of Python 2.7 or 3, e.g. [Anaconda](http://continuum.io/downloads), [Enthought Canopy](https://www.enthought.com/products/canopy/)
 2. Alternatively, custom installation of pip, the SciPy stack
 
+(Optional) Create a virtual environment to store the dependencies::
+
+$ pip install virtualenv
+$ cd my_project_folder
+$ virtualenv my_project
+
+To activate the virtual environment::
+
+$ source my_project/bin/activate
+
 To install, in the top-level directory of defiNETti (where "setup.py" lives), type::
 
 $ pip install .
@@ -116,7 +126,7 @@ Population Genetic Example
 ==========================
 A population genetics-specific example can be found in ``example/``. Note that ``msprime`` version 0.4.0 is needed to run this example. This is a simpler version than the experiments used in the paper version.
 
-Disiderata
+Additional Details
 ----------
 - Distances are normalized to be on the order of 0 and 1 for optimization purposes.
 - More SNPs than necessary are simulated then truncated and the hotspot region is centered.
