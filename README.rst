@@ -53,7 +53,7 @@ An example simulator for inferring gaussian parameters::
 
         return (data,label)
 
-A more detailed population genetics-specific example is shown in ``example/``
+A more detailed population genetics-specific example is shown in ``example/``. Note in principle the simulator object could randomly sample from a fixed dataset if no generative model is available.
 
 
 Neural Network
