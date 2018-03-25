@@ -9,11 +9,11 @@ prior_rates, weight_prob = simulator_example.parse_hapmap_empirical_prior(['gene
 print('Training the network...')
 train((198,24,2), (2,), lambda: simulator_example.simulate_data(prior_rates, weight_prob), 
                 phi_net = [('conv', 5, 32),('conv', 5, 64)],
-		g = ('top_k',1),
-		h_net = [("fc",128),("fc",128),("softmax",)],
+                g = ('top_k',1),
+                h_net = [("fc",128),("fc",128),("softmax",)],
                 num_batches = 2000,
                 verbosity = 100,
-		training_threads=5,
+                training_threads=5,
                 sim_threads=5, 
                 save_path='./example_weights',
                 training_summary='./summary.txt')
