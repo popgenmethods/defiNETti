@@ -126,8 +126,19 @@ Population Genetic Example
 ==========================
 A population genetics-specific example can be found in ``example/``. Note that ``msprime`` version 0.4.0 is needed to run this example. This is a simpler version than the experiments used in the paper version.
 
+Quick Start
+-----------
+To run the example, ::
+
+$ cd example
+$ python run_example.py
+
+The expected accuracy after the first few hundred batches should be around ~80-90% with a slow steady increase after that. For 5 threads of simulation and training, the training should take roughly half an hour per 1000 batches. In the paper, we used compute resources that allocated 24 threads for each simulation and training.
+
 Additional Details
 ----------
+- For inference purposes, we recommend running for around 20000 batches or once there is clear convergence.
+- The speed of the method is dependent on the number of CPU cores available for simulation. We recommend experimenting with the number of threads dedicated to simulation and training to find the optimal speed. (Make sure it sums to the total number of cores available).
 - Distances are normalized to be on the order of 0 and 1 for optimization purposes.
 - More SNPs than necessary are simulated then truncated and the hotspot region is centered.
 - A prior over rates is generated from the HapMap recombination map. In the paper version, we use windows of the fine-scale recombination map rather than flat rates as in the example.
