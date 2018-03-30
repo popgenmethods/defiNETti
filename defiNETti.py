@@ -18,9 +18,6 @@ def _dimension_match(shape1, shape2):
             return False
     return True
 
-
-
-
 def _total_dim(dims):
     if type(dims) == int:
         return dims
@@ -29,7 +26,8 @@ def _total_dim(dims):
         to_return *= d
     return to_return
 
-
+class _DimensionException(Exception):
+    pass
 
 
 def _layer_to_weights(prev_dim, layer):
@@ -199,12 +197,19 @@ def train(input_shape, output_shape, simulator, phi_net = [("fc",1024),("fc",102
     #adapted from https://indico.io/blog/tensorflow-data-input-part2-extensions/
     def safe_simulate():
         try:
+            result = simulator()
+            if not isinstance(result, tuple): raise TypeError("Simulator did not produce a tuple")
             x,y = simulator()
-            assert _dimension_match(x.shape,input_shape)
-            assert _dimension_match(y.shape,output_shape)
+            if not isinstance(x, np.ndarray): raise TypeError("Simulator did not produce a numpy array as input")
+            if not isinstance(y, np.ndarray): raise TypeError("Simulator did not produce a numpy array for the label")
+            if not _dimension_match(x.shape,input_shape): raise _DimensionException("input")
+            if not _dimension_match(y.shape,output_shape): raise _DimensionException("output")
             return simulator()
-        except:
-            logging.warning("Simulator created data of an unexpected dimension")
+        except _DimensionException as e:
+            logging.warning("Dimension mismatch between simulations and " + str(e) + " size")
+        except Exception as e:
+            logging.warning("The provided simulator produced data that was not recognized by defiNETti. The exception encountered was " + str(e))
+            
     def simulation_iterator():
         while True:
             x,y = safe_simulate()
