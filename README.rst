@@ -16,11 +16,15 @@ Prerequisites:
 1. Scientific distribution of Python 2.7 or 3, e.g. [Anaconda](http://continuum.io/downloads), [Enthought Canopy](https://www.enthought.com/products/canopy/)
 2. Alternatively, custom installation of pip, the SciPy stack
 
-(Optional) Create a virtual environment to store the dependencies::
+(Optional) Create a virtual environment to store the dependencies.
+For python 2,::
 
 $ pip install virtualenv
 $ cd my_project_folder
 $ virtualenv my_project
+
+For python 3,::
+$ python3 -m venv my_project_folder
 
 To activate the virtual environment::
 
@@ -128,7 +132,7 @@ A population genetics-specific example can be found in ``example/``. Note that `
 
 Quick Start
 -----------
-To run the example, ::
+To run the example, (for python 3 use python3 instead of python) ::
 
 $ cd example
 $ python run_example.py
